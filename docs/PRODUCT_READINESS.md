@@ -56,7 +56,7 @@ These are the requirements that should be considered part of the current product
 - [x] Classic Start surface.
 - [x] Start provider switching.
 - [x] Populate Start surfaces from discovered apps.
-- [ ] Launch apps directly from Start surfaces.
+- [x] Launch apps directly from Start surfaces.
 - [ ] Search/filter apps from Start surfaces.
 - [ ] Better app categorization and deduplication.
 
