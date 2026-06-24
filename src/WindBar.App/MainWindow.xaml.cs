@@ -17,6 +17,7 @@ namespace WindBar.App
         private readonly SettingsStore _settingsStore = new SettingsStore();
         private readonly PinnedAppService _pinnedAppService = new PinnedAppService();
         private readonly OpenAppService _openAppService = new OpenAppService();
+        private readonly SampleMediaProvider _mediaProvider = new SampleMediaProvider();
         private readonly WindBarSettings _settings;
         private readonly Grid _root = new Grid();
         private readonly StackPanel _left = new StackPanel { Orientation = Orientation.Horizontal };
@@ -95,6 +96,8 @@ namespace WindBar.App
 
             BuildCenterZone();
 
+            if (_settings.ShowMediaMiniPlayer)
+                _right.Children.Add(new MediaMiniPlayerModule(_mediaProvider));
             if (_settings.ShowSettingsButton)
                 _right.Children.Add(MakeButton("Settings", OpenSettings, "WindBar settings"));
             if (_settings.ShowThemeButton)
