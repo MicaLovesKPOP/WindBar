@@ -48,7 +48,7 @@ These are the requirements that should be considered part of the current product
 - [ ] Shortcut/AppUserModelID identity matching between pinned and running apps.
 - [x] Group multiple windows from the same app.
 - [ ] Stable app icons instead of text-only buttons.
-- [ ] Reasonable overflow handling when there are too many pinned/running apps.
+- [x] Reasonable overflow handling when there are too many pinned/running apps.
 
 ### Start menu surfaces
 
