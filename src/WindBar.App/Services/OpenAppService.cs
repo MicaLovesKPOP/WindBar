@@ -8,6 +8,7 @@ namespace WindBar.App.Services
 {
     public sealed class OpenAppService
     {
+        private const int SW_MINIMIZE = 6;
         private const int SW_RESTORE = 9;
 
         public sealed class OpenApp
@@ -15,11 +16,13 @@ namespace WindBar.App.Services
             public string Title { get; set; } = string.Empty;
             public string ProcessName { get; set; } = string.Empty;
             public IntPtr WindowHandle { get; set; }
+            public bool IsActive { get; set; }
         }
 
         public IEnumerable<OpenApp> GetOpenApps()
         {
             var currentProcessId = Environment.ProcessId;
+            var foreground = GetForegroundWindow();
             return Process.GetProcesses()
                 .Where(process => process.Id != currentProcessId)
                 .Where(process => process.MainWindowHandle != IntPtr.Zero)
@@ -28,19 +31,30 @@ namespace WindBar.App.Services
                 {
                     Title = process.MainWindowTitle,
                     ProcessName = process.ProcessName,
-                    WindowHandle = process.MainWindowHandle
+                    WindowHandle = process.MainWindowHandle,
+                    IsActive = process.MainWindowHandle == foreground
                 })
-                .OrderBy(app => app.ProcessName)
+                .OrderByDescending(app => app.IsActive)
+                .ThenBy(app => app.ProcessName)
                 .ThenBy(app => app.Title)
                 .ToList();
         }
 
-        public void Activate(OpenApp app)
+        public void ActivateOrToggle(OpenApp app)
         {
             if (app.WindowHandle == IntPtr.Zero) return;
+            if (GetForegroundWindow() == app.WindowHandle)
+            {
+                ShowWindow(app.WindowHandle, SW_MINIMIZE);
+                return;
+            }
+
             ShowWindow(app.WindowHandle, SW_RESTORE);
             SetForegroundWindow(app.WindowHandle);
         }
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
 
         [DllImport("user32.dll")]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
