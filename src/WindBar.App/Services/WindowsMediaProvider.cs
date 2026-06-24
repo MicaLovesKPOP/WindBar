@@ -15,7 +15,7 @@ namespace WindBar.App.Services
         {
             SourceName = "Windows media session",
             Title = "Nothing playing",
-            Artist = "",
+            Artist = string.Empty,
             PlaybackState = MediaPlaybackState.Stopped,
             CanPlayPause = false,
             CanGoPrevious = false,
@@ -25,6 +25,7 @@ namespace WindBar.App.Services
         public string Id => "media.windows";
         public string DisplayName => "Windows media provider";
         public MediaSessionState Current => _current;
+        public bool IsAvailable { get; private set; }
 
         public event EventHandler? Changed;
 
@@ -40,11 +41,14 @@ namespace WindBar.App.Services
             try
             {
                 _manager = await GlobalSystemMediaTransportControlsSessionManager.RequestAsync();
+                IsAvailable = _manager != null;
                 await RefreshAsync();
-                _pollTimer.Start();
+                if (IsAvailable)
+                    _pollTimer.Start();
             }
             catch
             {
+                IsAvailable = false;
                 _current = new MediaSessionState
                 {
                     SourceName = "Windows media session",
@@ -63,7 +67,7 @@ namespace WindBar.App.Services
         {
             try
             {
-                var session = await GetPreferredSessionAsync();
+                var session = GetPreferredSession();
                 if (session != null)
                 {
                     await session.TryTogglePlayPauseAsync();
@@ -79,7 +83,7 @@ namespace WindBar.App.Services
         {
             try
             {
-                var session = await GetPreferredSessionAsync();
+                var session = GetPreferredSession();
                 if (session != null)
                 {
                     await session.TrySkipPreviousAsync();
@@ -95,7 +99,7 @@ namespace WindBar.App.Services
         {
             try
             {
-                var session = await GetPreferredSessionAsync();
+                var session = GetPreferredSession();
                 if (session != null)
                 {
                     await session.TrySkipNextAsync();
@@ -111,14 +115,14 @@ namespace WindBar.App.Services
         {
             try
             {
-                var session = await GetPreferredSessionAsync();
+                var session = GetPreferredSession();
                 if (session == null)
                 {
                     _current = new MediaSessionState
                     {
                         SourceName = "Universal media",
                         Title = "Nothing playing",
-                        Artist = "",
+                        Artist = string.Empty,
                         PlaybackState = MediaPlaybackState.Stopped,
                         CanPlayPause = false,
                         CanGoPrevious = false,
@@ -136,8 +140,8 @@ namespace WindBar.App.Services
                 {
                     SourceName = session.SourceAppUserModelId ?? "Unknown source",
                     Title = media?.Title ?? "Unknown title",
-                    Artist = media?.Artist ?? "",
-                    Album = media?.AlbumTitle ?? "",
+                    Artist = media?.Artist ?? string.Empty,
+                    Album = media?.AlbumTitle ?? string.Empty,
                     PlaybackState = MapPlaybackState(playback?.PlaybackStatus),
                     PositionSeconds = timeline != null ? timeline.Position.TotalSeconds : null,
                     DurationSeconds = timeline != null ? timeline.EndTime.TotalSeconds : null,
@@ -153,7 +157,7 @@ namespace WindBar.App.Services
             }
         }
 
-        private async Task<GlobalSystemMediaTransportControlsSession?> GetPreferredSessionAsync()
+        private GlobalSystemMediaTransportControlsSession? GetPreferredSession()
         {
             if (_manager == null)
                 return null;
