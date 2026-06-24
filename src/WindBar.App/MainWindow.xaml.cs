@@ -26,6 +26,7 @@ namespace WindBar.App
         private readonly Dictionary<string, IStartMenuProvider> _startProviders = new Dictionary<string, IStartMenuProvider>();
         private readonly DispatcherTimer _clock = new DispatcherTimer();
         private readonly DispatcherTimer _runningRefresh = new DispatcherTimer();
+        private MediaMiniPlayerModule? _mediaMiniPlayer;
         private Button? _clockButton;
         private bool _isHidden;
 
@@ -87,6 +88,7 @@ namespace WindBar.App
             _left.Children.Clear();
             _center.Children.Clear();
             _right.Children.Clear();
+            _mediaMiniPlayer = null;
 
             Grid.SetColumn(_left, 0);
             Grid.SetColumn(_center, 1);
@@ -109,7 +111,10 @@ namespace WindBar.App
             BuildCenterZone();
 
             if (_settings.ShowMediaMiniPlayer)
-                _right.Children.Add(new MediaMiniPlayerModule(_mediaProvider));
+            {
+                _mediaMiniPlayer = new MediaMiniPlayerModule(_mediaProvider, _settings.Theme);
+                _right.Children.Add(_mediaMiniPlayer);
+            }
             if (_settings.ShowSettingsButton)
                 _right.Children.Add(MakeButton("Settings", OpenSettings, "WindBar settings"));
             if (_settings.ShowThemeButton)
@@ -298,6 +303,7 @@ namespace WindBar.App
             ApplyButtonTheme(_left, foreground);
             ApplyButtonTheme(_center, foreground);
             ApplyButtonTheme(_right, foreground);
+            _mediaMiniPlayer?.ApplyTheme(_settings.Theme);
         }
 
         private void ApplyButtonTheme(Panel panel, Brush foreground)
