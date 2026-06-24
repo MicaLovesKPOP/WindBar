@@ -76,6 +76,11 @@ namespace WindBar.App
             Content = _root;
             MouseEnter += (_, __) => RevealFromAutoHide();
             MouseLeave += (_, __) => HideIfAutoHide();
+            MouseRightButtonUp += (_, e) =>
+            {
+                OpenSettingsWindow();
+                e.Handled = true;
+            };
         }
 
         private void BuildUi()
@@ -230,6 +235,11 @@ namespace WindBar.App
         }
 
         private void OpenSettings(object sender, RoutedEventArgs e)
+        {
+            OpenSettingsWindow();
+        }
+
+        private void OpenSettingsWindow()
         {
             var settings = new SettingsWindow(_settings, _settingsStore, ApplySettingsFromWindow);
             settings.Owner = this;
