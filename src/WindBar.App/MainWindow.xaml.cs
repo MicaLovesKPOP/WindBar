@@ -127,7 +127,7 @@ namespace WindBar.App
                 foreach (var app in _openAppService.GetOpenApps())
                 {
                     if (added >= 6) break;
-                    _center.Children.Add(MakeButton("● " + app.ProcessName, null, app.Title));
+                    _center.Children.Add(MakeButton("● " + app.ProcessName, (_, __) => _openAppService.Activate(app), app.Title));
                     added++;
                 }
             }
