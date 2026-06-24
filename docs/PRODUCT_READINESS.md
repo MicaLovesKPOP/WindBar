@@ -57,7 +57,7 @@ These are the requirements that should be considered part of the current product
 - [x] Start provider switching.
 - [x] Populate Start surfaces from discovered apps.
 - [x] Launch apps directly from Start surfaces.
-- [ ] Search/filter apps from Start surfaces.
+- [x] Search/filter apps from Start surfaces.
 - [ ] Better app categorization and deduplication.
 
 ### Universal media miniplayer
