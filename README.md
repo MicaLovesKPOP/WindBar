@@ -1,6 +1,6 @@
 # WindBar
 
-WindBar is an Explorer-safe Windows 11 taskbar replacement prototype written in C# and WPF. It keeps Explorer alive, draws its own topmost taskbar, and provides the groundwork for a modular taskbar with Start menu providers, widgets, themes, top and bottom placement, auto-hide, smart app discovery, persistent pinned apps, running-app visibility/activation, and future per-monitor layouts.
+WindBar is an Explorer-safe Windows 11 taskbar replacement prototype written in C# and WPF. It keeps Explorer alive, draws its own topmost taskbar, and provides the groundwork for a modular taskbar with Start menu providers, widgets, themes, top and bottom placement, auto-hide, smart app discovery, persistent pinned apps, running-app visibility/activation/toggling, and future per-monitor layouts.
 
 ## Current prototype
 
@@ -23,7 +23,9 @@ Implemented now:
 - Persistent pinned app model, store and service.
 - Center taskbar zone loads saved pins or creates first-run pins from smart discovery.
 - Center taskbar zone can also show running apps and refreshes that list periodically.
-- Running-app buttons can now activate/restore their windows through Win32.
+- Running-app buttons can activate/restore their windows through Win32.
+- Running-app buttons now show a different marker for the current foreground window.
+- Clicking an already-foreground running app minimizes it, while clicking an inactive running app restores/activates it.
 - Core settings model.
 - Settings persistence in the user AppData folder.
 - Widget contract and widget manager.
@@ -33,7 +35,6 @@ Implemented now:
 
 ## Still needed for real taskbar parity
 
-- Minimize/restore toggle behavior for already-active windows.
 - Grouping by app identity.
 - Task thumbnails and preview flyouts.
 - Jump lists.
@@ -61,4 +62,4 @@ The final product should support:
 
 Open windbar.sln in Visual Studio 2022 or newer and build WindBar.App.
 
-The next milestone is to add minimize/restore toggle behavior and a safer app identity/grouping model.
+The next milestone is a safer app identity/grouping model, followed by preview thumbnails and tray/appbar hosting.
