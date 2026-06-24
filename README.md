@@ -1,6 +1,6 @@
 # WindBar
 
-WindBar is an Explorer-safe Windows 11 taskbar replacement prototype written in C# and WPF. It keeps Explorer alive, draws its own topmost taskbar, and provides the groundwork for a modular taskbar with Start menu providers, widgets, themes, top and bottom placement, auto-hide, and future per-monitor layouts.
+WindBar is an Explorer-safe Windows 11 taskbar replacement prototype written in C# and WPF. It keeps Explorer alive, draws its own topmost taskbar, and provides the groundwork for a modular taskbar with Start menu providers, widgets, themes, top and bottom placement, auto-hide, smart app discovery, and future per-monitor layouts.
 
 ## Current prototype
 
@@ -13,15 +13,17 @@ Implemented now:
 - Light, dark, OLED and transparent theme modes.
 - Left, center and right taskbar zones.
 - Start provider switching buttons.
-- Windows 11 style Start provider placeholder.
-- Windows 10 style Start provider placeholder.
-- Windows 8.1 full-screen Start screen provider placeholder.
-- Classic Start provider placeholder.
+- Windows 11 style Start provider.
+- Modern Start provider inspired by the Windows 10 layout.
+- Full-screen Start provider inspired by Windows 8.1.
+- Classic Start provider.
 - Clock module.
 - Pinned app placeholder buttons.
 - Core settings model.
+- Settings persistence in the user AppData folder.
 - Widget contract and widget manager.
-- App scanner stub for installed and portable app discovery.
+- App scanner for Start menu shortcuts, desktop shortcuts and selected portable app folders.
+- Start surfaces that populate from discovered apps and group them by simple heuristics.
 
 ## Product direction
 
@@ -43,4 +45,4 @@ The final product should support:
 
 Open windbar.sln in Visual Studio 2022 or newer and build WindBar.App.
 
-The next milestone is to replace placeholders with real module services and a real appbar host.
+The next milestone is to replace the taskbar placeholders with real running-window, pinned-app and tray services, then add a real appbar host.
