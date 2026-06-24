@@ -36,6 +36,7 @@ namespace WindBar.Core
         public bool ShowStartSwitcher { get; set; } = true;
         public bool ShowPinnedApps { get; set; } = true;
         public bool ShowOpenApps { get; set; } = true;
+        public bool ShowMediaMiniPlayer { get; set; } = true;
         public bool ShowThemeButton { get; set; } = true;
         public bool ShowPlacementButton { get; set; } = true;
         public bool ShowAutoHideButton { get; set; } = true;
