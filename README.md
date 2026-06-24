@@ -4,7 +4,7 @@ WindBar is an Explorer-safe Windows 11 taskbar replacement prototype written in 
 
 ## Current prototype
 
-The current build is a code-only WPF app. It avoids XAML build issues by disabling default XAML compilation and creating the UI from C#.
+The current build is a code-only WPF app targeting .NET 8. It avoids XAML build issues by disabling default XAML compilation and creating the UI from C#.
 
 Implemented now:
 
@@ -12,6 +12,7 @@ Implemented now:
 - Auto-hide prototype.
 - Light, dark, OLED and transparent theme modes.
 - Left, center and right taskbar zones.
+- Module visibility flags for Start, Search, Start switcher, pinned apps, theme, placement, auto-hide and clock.
 - Start provider switching buttons.
 - Windows 11 style Start provider.
 - Modern Start provider inspired by the Windows 10 layout.
@@ -26,6 +27,7 @@ Implemented now:
 - App scanner for Start menu shortcuts, desktop shortcuts and selected portable app folders.
 - Start surfaces that populate from discovered apps and group them by simple heuristics.
 - Initial open-app discovery service, not yet wired into the main bar because activation and grouping need a safer next pass.
+- GitHub Actions build workflow on Windows.
 
 ## Product direction
 
