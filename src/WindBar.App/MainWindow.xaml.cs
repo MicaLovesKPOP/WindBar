@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -16,7 +15,7 @@ namespace WindBar.App
     public partial class MainWindow : Window
     {
         private readonly SettingsStore _settingsStore = new SettingsStore();
-        private readonly AppScanner _appScanner = new AppScanner();
+        private readonly PinnedAppService _pinnedAppService = new PinnedAppService();
         private readonly WindBarSettings _settings;
         private readonly Grid _root = new Grid();
         private readonly StackPanel _left = new StackPanel { Orientation = Orientation.Horizontal };
@@ -86,7 +85,7 @@ namespace WindBar.App
             _left.Children.Add(MakeButton("10", (_, __) => SelectStart("start.win10"), "Use modern Start"));
             _left.Children.Add(MakeButton("8.1", (_, __) => SelectStart("start.win81"), "Use full screen Start"));
 
-            foreach (var app in _appScanner.ScanSmartDefaults().Take(5))
+            foreach (var app in _pinnedAppService.LoadOrCreateDefaults())
             {
                 _center.Children.Add(MakeButton(app.Name, (_, __) => Launch(app.Path), app.Path));
             }
