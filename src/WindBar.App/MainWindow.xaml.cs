@@ -16,6 +16,7 @@ namespace WindBar.App
     {
         private readonly SettingsStore _settingsStore = new SettingsStore();
         private readonly PinnedAppService _pinnedAppService = new PinnedAppService();
+        private readonly OpenAppService _openAppService = new OpenAppService();
         private readonly WindBarSettings _settings;
         private readonly Grid _root = new Grid();
         private readonly StackPanel _left = new StackPanel { Orientation = Orientation.Horizontal };
@@ -23,6 +24,7 @@ namespace WindBar.App
         private readonly StackPanel _right = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right };
         private readonly Dictionary<string, IStartMenuProvider> _startProviders = new Dictionary<string, IStartMenuProvider>();
         private readonly DispatcherTimer _clock = new DispatcherTimer();
+        private readonly DispatcherTimer _runningRefresh = new DispatcherTimer();
         private Button? _clockButton;
         private bool _isHidden;
 
@@ -35,6 +37,7 @@ namespace WindBar.App
             ApplyTheme();
             ApplyPlacement();
             StartClock();
+            StartRunningRefresh();
             Closing += (_, __) => _settingsStore.Save(_settings);
         }
 
@@ -90,19 +93,7 @@ namespace WindBar.App
                 _left.Children.Add(MakeButton("8.1", (_, __) => SelectStart("start.win81"), "Use full screen Start"));
             }
 
-            if (_settings.ShowPinnedApps)
-            {
-                foreach (var app in _pinnedAppService.LoadOrCreateDefaults())
-                {
-                    _center.Children.Add(MakeButton(app.Name, (_, __) => Launch(app.Path), app.Path));
-                }
-            }
-            if (_center.Children.Count == 0)
-            {
-                _center.Children.Add(MakeButton("Files", null, "Pinned app"));
-                _center.Children.Add(MakeButton("Browser", null, "Pinned app"));
-                _center.Children.Add(MakeButton("Code", null, "Pinned app"));
-            }
+            BuildCenterZone();
 
             if (_settings.ShowSettingsButton)
                 _right.Children.Add(MakeButton("Settings", OpenSettings, "WindBar settings"));
@@ -116,6 +107,36 @@ namespace WindBar.App
             {
                 _clockButton = MakeButton(DateTime.Now.ToString("HH:mm"), null, "Clock");
                 _right.Children.Add(_clockButton);
+            }
+        }
+
+        private void BuildCenterZone()
+        {
+            _center.Children.Clear();
+            if (_settings.ShowPinnedApps)
+            {
+                foreach (var app in _pinnedAppService.LoadOrCreateDefaults())
+                {
+                    _center.Children.Add(MakeButton(app.Name, (_, __) => Launch(app.Path), app.Path));
+                }
+            }
+
+            if (_settings.ShowOpenApps)
+            {
+                var added = 0;
+                foreach (var app in _openAppService.GetOpenApps())
+                {
+                    if (added >= 6) break;
+                    _center.Children.Add(MakeButton("● " + app.ProcessName, null, app.Title));
+                    added++;
+                }
+            }
+
+            if (_center.Children.Count == 0)
+            {
+                _center.Children.Add(MakeButton("Files", null, "Pinned app"));
+                _center.Children.Add(MakeButton("Browser", null, "Pinned app"));
+                _center.Children.Add(MakeButton("Code", null, "Pinned app"));
             }
         }
 
@@ -154,6 +175,17 @@ namespace WindBar.App
                 if (_clockButton != null) _clockButton.Content = DateTime.Now.ToString("HH:mm");
             };
             _clock.Start();
+        }
+
+        private void StartRunningRefresh()
+        {
+            _runningRefresh.Interval = TimeSpan.FromSeconds(10);
+            _runningRefresh.Tick += (_, __) =>
+            {
+                BuildCenterZone();
+                ApplyButtonTheme(_center, _settings.Theme == BarTheme.Light ? Brushes.Black : Brushes.White);
+            };
+            _runningRefresh.Start();
         }
 
         private void SelectStart(string id)
