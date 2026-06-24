@@ -21,7 +21,7 @@ namespace WindBar.App.Views
 
             Title = "WindBar Settings";
             Width = 460;
-            Height = 620;
+            Height = 660;
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             Background = new SolidColorBrush(Color.FromRgb(32, 32, 32));
             Foreground = Brushes.White;
@@ -43,6 +43,8 @@ namespace WindBar.App.Views
             root.Children.Add(MakeCheckBox("Search", _settings.ShowSearchButton, value => _settings.ShowSearchButton = value));
             root.Children.Add(MakeCheckBox("Start switcher", _settings.ShowStartSwitcher, value => _settings.ShowStartSwitcher = value));
             root.Children.Add(MakeCheckBox("Pinned apps", _settings.ShowPinnedApps, value => _settings.ShowPinnedApps = value));
+            root.Children.Add(MakeCheckBox("Running apps", _settings.ShowOpenApps, value => _settings.ShowOpenApps = value));
+            root.Children.Add(MakeCheckBox("Settings button", _settings.ShowSettingsButton, value => _settings.ShowSettingsButton = value));
             root.Children.Add(MakeCheckBox("Theme button", _settings.ShowThemeButton, value => _settings.ShowThemeButton = value));
             root.Children.Add(MakeCheckBox("Placement button", _settings.ShowPlacementButton, value => _settings.ShowPlacementButton = value));
             root.Children.Add(MakeCheckBox("Auto-hide button", _settings.ShowAutoHideButton, value => _settings.ShowAutoHideButton = value));
