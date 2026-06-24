@@ -31,5 +31,13 @@ namespace WindBar.Core
         public bool AutoHide { get; set; }
         public int BarThickness { get; set; } = 48;
         public string StartProviderId { get; set; } = "start.win11";
+        public bool ShowStartButton { get; set; } = true;
+        public bool ShowSearchButton { get; set; } = true;
+        public bool ShowStartSwitcher { get; set; } = true;
+        public bool ShowPinnedApps { get; set; } = true;
+        public bool ShowThemeButton { get; set; } = true;
+        public bool ShowPlacementButton { get; set; } = true;
+        public bool ShowAutoHideButton { get; set; } = true;
+        public bool ShowClock { get; set; } = true;
     }
 }
