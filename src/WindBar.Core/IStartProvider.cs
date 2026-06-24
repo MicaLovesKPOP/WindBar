@@ -1,1 +1,3 @@
-// placeholder
+namespace WindBar.Core
+{
+}
